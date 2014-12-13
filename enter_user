@@ -48,6 +48,6 @@ pass db '1234',0
 user db"rf",0
 pass_temp times 100 db 0
 user_temp  times 100 db 0
-m_user db "Enter user name:             ",0
-m_pass db "Enter pass:          ",0
+m_user db "Enter user name: ",0
+m_pass db "Enter pass: ",0
 message2 db "end of loop1" , 0 
