@@ -16,6 +16,38 @@ printString:
     lodsb
     cmp al, 0
     je .return
+    cmp al, '\'
+    jne .down
+    lodsb
+    cmp al,'t'
+    je .printTab
+    cmp al,'n'
+    je .printEnter
+    mov al,'\'
+    int 10h
+    dec si
+    lodsb
+    jmp .down
+    
+    .printTab:
+        mov al,' '
+        int 10h
+        mov al,' '
+        int 10h
+        mov al,' '
+        int 10h
+        mov al,' '
+        int 10h
+        jmp .loop1
+        
+     .printEnter:
+     push si
+     mov si,enterStr
+     call printString
+     pop si
+     jmp .loop1
+    
+    .down:
     int 10h
     jmp .loop1
 .return:
@@ -92,10 +124,10 @@ getString:
         call printChar
         
         ;to show what is seved in array
-        mov si,sign
-        call printString   
-        mov si, bx
-        call printString   
+        ;mov si,sign
+        ;call printString   
+        ;mov si, bx
+        ;call printString   
 ;---------------------------------------------------------------------
         mov byte[buffer],0dh
         call printChar
@@ -105,8 +137,9 @@ getString:
         ret
          
         
-sign db '>>> ',0
+;sign db '>>> ',0
 buffer db 0
+enterStr db 0ah,0dh,0
 ; Write the rest of functions you need for console_io here
 ; you may also create other ".asm" files for rest of functions you need
 ; just do NOT forget to include them in "kernel.asm"
