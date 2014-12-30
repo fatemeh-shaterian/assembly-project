@@ -20,19 +20,27 @@ kernelMain:
     mov gs, ax
 
  ; Now we use our function to write an sample strings
- 
-call enter_user
-; call shoutdown
-call clear
-tocall:
-mov si,user
-call printString
-       mov si,massage
+         
+       call clear
+ 	call enter_user
+	call clear
+	.tocall:
+	mov si,user
+	call printString
+        mov si,massage
         call printString
-    mov di,array
-   mov bx,array
-  call getString
-jmp tocall
+    
+        mov di,array
+        mov bx,array
+        call getString
+        call recognize
+        cmp byte[flag],0
+        je out
+	jmp .tocall
+	out:
+	call clear
+	mov esi,sampleMessage
+	call printString
 
 ; Now we put cpu in halt state so the computer can be turned off
         cli
@@ -40,14 +48,18 @@ jmp tocall
 ; We must include our files in the end because this file in executed from first line
 ; so if we include them above the "kernelMain" all the codes in these files will be executed first
 
+%INCLUDE"time.asm"
 %INCLUDE "console_io.asm"
 %INCLUDE"enter_user.asm"
 %INCLUDE"clearScreen.asm"
 %INCLUDE"shoutdown.asm"
+%INCLUDE"instructionre.asm"
+%INCLUDE"echo.asm"
+%INCLUDE"help.asm"
 
-sampleMessage: db 'first test', 0DH, 0Ah, 0
+sampleMessage db 'first test', 0DH, 0Ah, 0
 massage db '@sbu: $ ',0
 array times 100 db 0
+flag db 1
 
 exitOS:
-
