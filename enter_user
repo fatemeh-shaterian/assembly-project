@@ -43,11 +43,10 @@ ret
 ;%INCLUDE "console_io.asm"
 %INCLUDE"strCmp.asm"
 
-
 pass db '1234',0
 user db"rf",0
 pass_temp times 100 db 0
 user_temp  times 100 db 0
 m_user db "Enter user name: ",0
 m_pass db "Enter pass: ",0
-message2 db "end of loop1" , 0 
+message2 db "user or pass is not correct, try again!!!" , 0ah,0dh,0 
