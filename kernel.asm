@@ -25,7 +25,7 @@ kernelMain:
  	call enter_user
 	call clear
 	.tocall:
-	mov si,user
+	mov si,user_temp
 	call printString
         mov si,massage
         call printString
@@ -56,6 +56,7 @@ kernelMain:
 %INCLUDE"instructionre.asm"
 %INCLUDE"echo.asm"
 %INCLUDE"help.asm"
+%INCLUDE"whoAmI.asm"
 
 sampleMessage db 'first test', 0DH, 0Ah, 0
 massage db '@sbu: $ ',0
