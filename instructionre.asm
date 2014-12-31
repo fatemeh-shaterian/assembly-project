@@ -67,6 +67,14 @@ recognize:
 	je .totimes
 	pop bx			;;;;;;;;;;;;;;
 	
+	push bx
+	mov dx , whoT
+	mov cx,1
+	call strCmp
+	cmp bx , 1
+	je .toWho
+	pop bx
+	
         mov si,sign
         call printString
         mov si,comNotFound
@@ -119,6 +127,11 @@ recognize:
 		call getTime
 		pop bx
 		jmp .end
+		
+		.toWho:
+		pop bx
+		call who
+		jmp .end
         
 	.end:
 	popa
@@ -130,5 +143,6 @@ clearT db "clear",0
 reset db "reset",0
 helpT0 db "help",0
 helpT1 db "help",0
+whoT db "who am i",0
 comNotFound db "command not found...",0dh,0ah,0
 timess db "time -s",0                   ;;
