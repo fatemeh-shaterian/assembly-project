@@ -1,5 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;   recived:dx,bx               
+;;   recived:dx,bx    
+;;   returns: bx   bx = 1 if two strings are same   bx = 0 if two strings are different           
 ;;   if cx == 0  then command is like echo
 ;;   use: si
 ;;;;;;;;;;;;;;;;;;;;;;;;
