@@ -18,6 +18,14 @@ recognize:
 	cmp bx , 1
 	je .toShutDown
 	pop bx
+	
+	push bx
+	mov dx , hist
+	mov cx,1
+	call strCmp
+	cmp bx , 1
+	je .tohistory
+	pop bx
 
 	push bx
 	mov dx , echoT
@@ -36,11 +44,36 @@ recognize:
 	pop bx
 	
 	push bx
+	mov dx , changusername
+	mov cx,1
+	call strCmp
+	cmp bx , 1
+	je .tochangusrnm
+	pop bx
+	
+	push bx
 	mov dx , reset
 	mov cx,1
 	call strCmp
 	cmp bx , 1
 	je .toReset
+	pop bx
+	
+	push bx
+	mov dx , passw
+	mov cx,1
+	call strCmp
+	cmp bx , 1
+	je .topasswd
+	pop bx
+	
+	push bx
+	mov cx,1
+	mov dx , Date
+	call strCmp
+	cmp bx , 1
+
+	je .toDate
 	pop bx
 	
 	push bx
@@ -75,6 +108,14 @@ recognize:
 	je .toWho
 	pop bx
 	
+	push bx
+	mov dx , timesss
+	mov cx,0
+	call strCmp
+	cmp bx , 1
+	je .totimesss
+	pop bx
+	
         mov si,sign
         call printString
         mov si,comNotFound
@@ -85,6 +126,12 @@ recognize:
 		call shutdown
 		pop bx
 		jmp .end
+	
+	.tohistory:
+		
+		call showhistory
+		pop bx
+		jmp .end	
 		
 	.toEcho:
                 
@@ -93,6 +140,23 @@ recognize:
                 pop bx
 	        jmp .end
 	        
+	 .tochangusrnm:
+	 	
+	 	call changeusr
+	        pop bx
+	        jmp .end
+	 
+	 .toDate:
+	
+		call getDate
+		pop bx
+		jmp .end
+		
+	.topasswd:
+		call changepass
+		pop bx
+		jmp .end		       
+		        
 	  .toClear:
 	        call clear
 	        pop bx
@@ -132,17 +196,29 @@ recognize:
 		pop bx
 		call who
 		jmp .end
-        
+		
+		.totimesss:
+                pop bx
+                call setTime
 	.end:
 	popa
 ret
-time db "time",0
-shutDown db "shutdown",0
-echoT db "echo",0
-clearT db "clear",0
-reset db "reset",0
-helpT0 db "help",0
-helpT1 db "help",0
-whoT db "who am i",0
-comNotFound db "command not found...",0dh,0ah,0
-timess db "time -s",0                   ;;
+
+
+time 		db "time",0
+shutDown	db "shutdown",0
+echoT 		db "echo",0
+hist 		db "history" , 0
+clearT 		db "clear",0
+reset 		db "reset",0
+Date 		db "date", 0
+helpT0		db "help",0
+helpT1		db "help",0
+whoT 		db "who am i",0
+comNotFound 	db "command not found...",0dh,0ah,0
+timess 		db "time -a",0                   ;;
+timesss 		db "time -s",0
+changusername 	db "change username", 0
+passw 		db "passwd",0
+
+
