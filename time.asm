@@ -2,10 +2,6 @@ hours db 0
 minutes db 0
 seconds db 0
 
-year dw 0
-month db 0
-day db 0
-dayOfWeek db 0
 timeString times 20 db 0
 ts db "testing", 0
 
@@ -20,8 +16,10 @@ getTime:
 	pusha
 	mov [temp] , ax
 	mov byte[timeString+10] , 0 
-	mov ax , 2c00h
-	int 21h
+	mov ah , 2
+	int 1ah
+	;mov ax , 2c00h
+	;int 21h
 			;mov byte[hours] , ch 
 			;mov byte[minutes] , cl
 			;mov byte[seconds] , dh
@@ -30,20 +28,66 @@ getTime:
 	jne down			;if time is called
 
 	mov dx , 0			;if time -s is called
-	movzx ax , ch
-	mov bx , 2
-	div bx
+	movzx ax ,  ch
+	sub ax , 12
 	push ax
+	add ax , 12
+	cmp ax , 12
+	jl d
+	sub ax , 12
+	d:
+	
 
-	mov ch , dl
+	mov ch , al
 
 	down:
+	
+		push ax
+		push bx
+		push dx
+		movzx ax,ch
+		mov bx,24
+		mov dx,0
+		div bx
+		mov ch,dl
+		pop dx
+		pop bx
+		pop ax
+		
+		
 		movzx ax , ch 		; byte[hours]
 		call makeTime
-
-		movzx ax , cl 		; byte[minutes]
+		
+		push ax
+		push bx
+		push dx
+		movzx ax,cl
+		mov bx,60
+		mov dx,0
+		div bx
+		mov cl,dl
+		pop dx
+		pop bx
+		pop ax
+		
+		movzx ax , cl		; byte[minutes]
 		call makeTime
 
+
+
+		push ax
+		push bx
+		;push dx
+		movzx ax,dh
+		mov bx,60
+		mov dx,0
+		div bx
+		mov dh,dl
+		;pop dx
+		pop bx
+		pop ax
+		
+		
 		movzx ax , dh 		; byte[seconds] 
 		call makeTime
 	
@@ -55,8 +99,8 @@ getTime:
 
 		pop ax				; if time -s is called
 		inc si
-		cmp ax , 1
-		je Pm
+		cmp ax , 0
+		jge Pm
 		mov byte[si] , 'A'
 		jmp tar
 		Pm:
@@ -75,16 +119,6 @@ getTime:
 			mov si , timeString
 			call printString
 
-;date
-
-	mov ax , 2a00h
-	int 21h
-
-
-mov word[year] , cx
-mov byte[month] , dh
-mov byte[day] , dl
-mov byte[dayOfWeek] , al
 
 	popa
 
